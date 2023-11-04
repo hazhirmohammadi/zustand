@@ -1,3 +1,6 @@
+import "./Column.css";
+
+
 export  default function Column({state}) {
-   return <div></div>
+   return <div className=" column">{state}</div>
 }
