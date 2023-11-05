@@ -2,6 +2,7 @@ import "./tack.css";
 import classNames from "classnames";
 
 const STATUS = 'DONE'
+
 export default function Tack({title}) {
    return(
        <div className="task">
