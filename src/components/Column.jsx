@@ -11,6 +11,9 @@ export default function Column({state}) {
 
    return <div className=" column">
       <p>{state}</p>
-      <Tack title="Todo"/>
+      {tasks.map((task) => (
+          <Tack key={task.title} title={task.title}/>
+      ))}
+
    </div>
 }
