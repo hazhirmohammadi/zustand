@@ -2,27 +2,40 @@ import "./Column.css";
 import Tack from "./Tack.jsx";
 import {useStore} from "../Store.js";
 import {useState} from "react";
+import classNames from "classnames";
 
 
 export default function Column({state}) {
    const [text, setText] = useState('');
    const [open, setOpen] = useState(false);
+   const [drop,setDrop]=useState(false);
+
 
    const tasks = useStore((store) =>
        store.tasks.filter(task => task.state === state)
    );
-   console.log(tasks);
    // eslint-disable-next-line react/prop-types
    const addTask = useStore((store) => store.addTask);
+   const setDraggedTask=useStore((store) => store.setDraggedTask);
+   const draggedTask=useStore((store) => store.DraggedTask);
+   const moveTask=useStore((store) => store.moveTask);
 
    return <div
-       className=" column"
+       className={classNames("column",{drop:drop})}
        onDragOver={(e) => {
+          setDrop(true);
+          e.preventDefault();
+       }}
+       onDragLeave={(e)=>{
+          setDrop(false);
           e.preventDefault();
        }}
        onDrop={() => {
-          setDraggedTask(null)
-          console.log("Dropped");}}
+          console.log(draggedTask);
+          moveTask(draggedTask,state)
+          // eslint-disable-next-line no-undef
+          setDraggedTask(null);
+         }}
    >
       <div className="titleWrapper">
          <p>{state}</p>
