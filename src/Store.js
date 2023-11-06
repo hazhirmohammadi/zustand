@@ -1,7 +1,8 @@
 import {create} from "zustand";
 
 const store = (set) => ({
-       tasks: [{title: '', state: ''}],
+       tasks: [{title: 'test', state: 'DONE'}],
+       droppedTask:null,
        addTask: (title, state) => set((store) =>
            ({
               tasks: [...store.tasks, {title, state}
@@ -11,6 +12,7 @@ const store = (set) => ({
            ({
               tasks: store.tasks.filter((task) => task.title !== title)
            })),
+       setDraggedTask:(title)=>set({DraggedTask:title}),
     }
 );
 
