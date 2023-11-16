@@ -1,24 +1,35 @@
 import {create} from "zustand";
-import { devtools, persist, subscribeWithSelector } from 'zustand/middleware';
+import {devtools, persist, subscribeWithSelector} from 'zustand/middleware';
 
 const store = (set) => ({
-       tasks: [{title: 'test', state: 'ONGOING'}],
-       droppedTask:null,
+       tasks: [],
+       droppedTask: null,
        addTask: (title, state) => set((store) =>
            ({
-              tasks: [...store.tasks, {title, state}]}),false,"addTask"),
+              tasks: [...store.tasks, {title, state}]
+           }), false, "addTask"),
        deleteTask: (title) => set((store) =>
            ({
               tasks: store.tasks.filter((task) => task.title !== title)
            })),
-       setDraggedTask:(title)=>set({DraggedTask:title}),
+       setDraggedTask: (title) => set({DraggedTask: title}),
        moveTask: (title, state) =>
            set((store) => ({
               tasks: store.tasks.map((task) =>
-                  task.title === title ? { title, state } : task
+                  task.title === title ? {title, state} : task
               ),
            })),
     }
 );
 
-export const useStore = create(persist(devtools(store),{name:"store"}));
+const log = (config) => (set, get, api) => config(
+    (...args) => {
+       console.log(args);
+       set(...args)
+    },
+    get,
+    api
+);
+export const useStore = create(
+    log(persist(devtools(store)))
+);
